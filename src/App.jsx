@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-//import Pictures from './components/pictures'
+import Pictures from './components/pictures'
 import './App.css'
 
 async function getCats(){
- const response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=xULTeFJyONWZOYgiB2UdHgDxa1mZwyWx&s=cats', {mode: 'cors'});
+const response = await fetch('https://api.giphy.com/v1/gifs/search?api_key=bA0ZycF9jl0hWyTJMvyZffbhWb4moeJx&q=cats&limit=6', { mode: 'cors' });
  const catData = await response.json();
- console.log('url:',typeof catData.data.images.original.url);
- return catData.data.images.original.url;
+ console.log('data:',catData.data);
+ return catData.data;
 }
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState([]);
 
   useEffect(()=>{
     async function getUrl(){
@@ -21,32 +18,12 @@ function App() {
       setUrl(data);
     }
     getUrl();
-  }),[];
-
+  },[]);
+        
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p>Hello World!!!!</p>
-      {url && <img src={url} alt="not there"></img>}
+      <p>Memory Card</p>
+      <Pictures data={url} />
     </>
   )
 }
