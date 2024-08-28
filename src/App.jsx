@@ -1,10 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+//import Pictures from './components/pictures'
 import './App.css'
+
+async function getCats(){
+ const response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=xULTeFJyONWZOYgiB2UdHgDxa1mZwyWx&s=cats', {mode: 'cors'});
+ const catData = await response.json();
+ console.log('url:',typeof catData.data.images.original.url);
+ return catData.data.images.original.url;
+}
 
 function App() {
   const [count, setCount] = useState(0)
+  const [url, setUrl] = useState("");
+
+  useEffect(()=>{
+    async function getUrl(){
+      const data = await getCats();
+      setUrl(data);
+    }
+    getUrl();
+  }),[];
 
   return (
     <>
@@ -28,6 +45,8 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <p>Hello World!!!!</p>
+      {url && <img src={url} alt="not there"></img>}
     </>
   )
 }
